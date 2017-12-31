@@ -60,3 +60,15 @@ def delete_item(id, text):
     item = search_item(gnote.items, text)
     item.delete()
     keep.sync()
+
+
+@cli.command('is-checked-item')
+@click.argument('id')
+@click.argument('text')
+def delete_item(id, text):
+    keep = gkeepapi.Keep()
+    success = keep.login(*get_auth())
+    gnote = keep.get(id)
+    item = search_item(gnote.items, text)
+    print(item.checked)
+    keep.sync()
