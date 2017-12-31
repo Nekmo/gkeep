@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+from google_keep_tasks.management import cli
+
+
+if __name__ == '__main__':
+    cli()
