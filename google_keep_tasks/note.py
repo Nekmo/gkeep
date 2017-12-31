@@ -10,6 +10,7 @@ def search_item(items, text):
     for item in items:
         if item.text == text:
             return item
+    raise ItemNotFound
 
 
 @cli.command('add-item')
@@ -21,7 +22,10 @@ def add_item(check, duplicate, id, text):
     keep = gkeepapi.Keep()
     success = keep.login(*get_auth())
     gnote = keep.get(id)
-    item = search_item(gnote.items, text)
+    try:
+        item = search_item(gnote.items, text)
+    except ItemNotFound:
+        item = None
     if item and not duplicate:
         item.checked = check
     else:
@@ -39,8 +43,18 @@ def edit_item(check, new_text, id, text):
     success = keep.login(*get_auth())
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
-    if item is None:
-        raise ItemNotFound
     item.text = new_text or item.text
     item.checked = item.checked if check is None else check
+    keep.sync()
+
+
+@cli.command('delete-item')
+@click.argument('id')
+@click.argument('text')
+def delete_item(id, text):
+    keep = gkeepapi.Keep()
+    success = keep.login(*get_auth())
+    gnote = keep.get(id)
+    item = search_item(gnote.items, text)
+    item.delete()
     keep.sync()
