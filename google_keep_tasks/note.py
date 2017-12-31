@@ -14,7 +14,7 @@ def search_item(items, text):
 
 
 @cli.command('add-item')
-@click.option('--check/--uncheck', default=False)
+@click.option('--check/--uncheck', default=None)
 @click.option('--duplicate/--no-duplicate', default=False)
 @click.argument('id')
 @click.argument('text')
@@ -24,8 +24,10 @@ def add_item(check, duplicate, id, text):
     gnote = keep.get(id)
     try:
         item = search_item(gnote.items, text)
+        check = item.checked if check is None else check
     except ItemNotFound:
         item = None
+        check = False if check is None else check
     if item and not duplicate:
         item.checked = check
     else:
