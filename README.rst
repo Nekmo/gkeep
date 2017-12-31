@@ -46,7 +46,8 @@ Examples:
 
 .. code-block:: bash
 
-    google-keep-tasks edit-item 75e4202b0c1.9fc0b868a7b34952 "Chip cookies" --new-text "Chocolate orange cookies"
+    google-keep-tasks edit-item 75e4202b0c1.9fc0b868a7b34952 "Chip cookies"
+                      --new-text "Chocolate orange cookies"
 
 
 Delete item on note
