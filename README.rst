@@ -1,3 +1,9 @@
+.. image:: https://raw.githubusercontent.com/Nekmo/gkeep/master/logo.png
+    :width: 100%
+
+|
+
+
 Google Keep Cli
 ###############
 Work with Google Keep on your terminal. To install this module::
