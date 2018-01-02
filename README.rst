@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/Nekmo/gkeep/master/logo.png
+.. image:: https://raw.githubusercontent.com/Nekmo/gkeep/master/logo.jpg
     :width: 100%
 
 |
