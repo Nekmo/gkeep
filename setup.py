@@ -19,9 +19,9 @@ AUTHOR = 'Nekmo'
 EMAIL = 'contacto@nekmo.com'
 
 # Información del paquete
-PACKAGE_NAME = 'google-keep-tasks'
-PACKAGE_DOWNLOAD_URL = 'https://github.com/Nekmo/google-keep-tasks/archive/master.zip'  # .tar.gz
-URL = 'https://github.com/Nekmo/google-keep-tasks'
+PACKAGE_NAME = 'gkeep'
+PACKAGE_DOWNLOAD_URL = 'https://github.com/Nekmo/gkeep/archive/master.zip'  # .tar.gz
+URL = 'https://github.com/Nekmo/gkeep'
 STATUS_LEVEL = 3  # 1:Planning 2:Pre-Alpha 3:Alpha 4:Beta 5:Production/Stable 6:Mature 7:Inactive
 KEYWORDS = ['google', 'keep', 'tasks', 'google-keep']  # Palabras clave
 # https://github.com/github/choosealicense.com/tree/gh-pages/_licenses

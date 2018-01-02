@@ -1,7 +1,10 @@
 import click
 import os
+
+import gkeepapi
 from click import ClickException, FileError
 
+from google_keep_tasks.auth import get_auth
 
 
 @click.group()
@@ -9,7 +12,9 @@ from click import ClickException, FileError
 @click.option('--auth', default=None)
 @click.pass_context
 def cli(ctx, debug, auth):
-    pass
+    keep = gkeepapi.Keep()
+    success = keep.login(*get_auth())
+    ctx.obj = {'keep': keep}
 
 
 import google_keep_tasks.note

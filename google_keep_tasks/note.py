@@ -18,9 +18,9 @@ def search_item(items, text):
 @click.option('--duplicate/--no-duplicate', default=False)
 @click.argument('id')
 @click.argument('text')
-def add_item(check, duplicate, id, text):
-    keep = gkeepapi.Keep()
-    success = keep.login(*get_auth())
+@click.pass_context
+def add_item(ctx, check, duplicate, id, text):
+    keep = ctx.obj['keep']
     gnote = keep.get(id)
     try:
         item = search_item(gnote.items, text)
@@ -40,9 +40,9 @@ def add_item(check, duplicate, id, text):
 @click.option('--new-text', default='')
 @click.argument('id')
 @click.argument('text')
-def edit_item(check, new_text, id, text):
-    keep = gkeepapi.Keep()
-    success = keep.login(*get_auth())
+@click.pass_context
+def edit_item(ctx, check, new_text, id, text):
+    keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
     item.text = new_text or item.text
@@ -53,9 +53,9 @@ def edit_item(check, new_text, id, text):
 @cli.command('delete-item')
 @click.argument('id')
 @click.argument('text')
-def delete_item(id, text):
-    keep = gkeepapi.Keep()
-    success = keep.login(*get_auth())
+@click.pass_context
+def delete_item(ctx, id, text):
+    keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
     item.delete()
@@ -65,9 +65,9 @@ def delete_item(id, text):
 @cli.command('is-checked-item')
 @click.argument('id')
 @click.argument('text')
-def delete_item(id, text):
-    keep = gkeepapi.Keep()
-    success = keep.login(*get_auth())
+@click.pass_context
+def delete_item(ctx, id, text):
+    keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
     print(item.checked)
