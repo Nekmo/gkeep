@@ -1,7 +1,5 @@
 import click
-import gkeepapi
 
-from google_keep_tasks.auth import get_auth
 from google_keep_tasks.exceptions import ItemNotFound
 from google_keep_tasks.management import cli
 
@@ -10,7 +8,7 @@ def search_item(items, text):
     for item in items:
         if item.text == text:
             return item
-    raise ItemNotFound
+    raise ItemNotFound(text)
 
 
 @cli.command('add-item')
