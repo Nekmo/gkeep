@@ -104,8 +104,8 @@ Examples:
 
 Thanks
 ======
-This module is a command-line interface of the module ` gkeepapi <https://github.com/kiwiz/gkeepapi/>`_.
-Many thanks to Kiwiz for maintaining the module.
+This module is a command-line interface of the module `gkeepapi <https://github.com/kiwiz/gkeepapi/>`_.
+Thanks to Kiwiz for maintaining the module.
 
 This module does not use an official Google API to work with Google Keep. As this module does not use an official
 API, its operation is not guaranteed for a production environment.
