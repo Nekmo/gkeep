@@ -20,3 +20,4 @@ def cli(ctx, debug, auth):
 
 
 import google_keep_tasks.items
+import google_keep_tasks.notes

@@ -25,6 +25,15 @@ class LoginError(GKeepError):
     body = 'Check credentials file. The syntax is: <username> <password>.'
 
 
+class InvalidColor(GKeepError):
+    def __init__(self, invalid_color):
+        import gkeepapi
+        colors = [color.name for color in gkeepapi.node.ColorValue]
+        super(InvalidColor, self).__init__('Invalid color: {}. Available colors: {}'.format(
+            invalid_color, ', '.join(colors)
+        ))
+
+
 def catch(fn):
     def wrap(*args, **kwargs):
         try:
