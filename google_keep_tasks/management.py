@@ -19,4 +19,4 @@ def cli(ctx, debug, auth):
     ctx.obj = {'keep': keep}
 
 
-import google_keep_tasks.note
+import google_keep_tasks.items
