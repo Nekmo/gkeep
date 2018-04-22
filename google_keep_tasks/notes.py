@@ -1,8 +1,21 @@
+# -*- coding: utf-8 -*-
 import click
 import gkeepapi
 
 from google_keep_tasks.exceptions import InvalidColor
 from google_keep_tasks.management import cli
+
+
+COLORS = {
+    gkeepapi.node.ColorValue.Gray: {'bg': 'black', 'fg': 'white'},
+    gkeepapi.node.ColorValue.Red: {'bg': 'red', 'fg': 'white'},
+    gkeepapi.node.ColorValue.Green: {'bg': 'green'},
+    gkeepapi.node.ColorValue.Yellow: {'bg': 'green', 'fg': 'black'},
+    gkeepapi.node.ColorValue.Blue: {'bg': 'cyan', 'fg': 'white'},
+    gkeepapi.node.ColorValue.DarkBlue: {'bg': 'blue', 'fg': 'white'},
+    gkeepapi.node.ColorValue.Purple: {'bg': 'magenta', 'fg': 'white'},
+    gkeepapi.node.ColorValue.White: {'bg': 'white', 'fg': 'black'},
+}
 
 
 def get_color(color):
@@ -84,4 +97,18 @@ def add_note(ctx, color, labels, title, text):
 def search_notes(ctx, **kwargs):
     keep = ctx.obj['keep']
     # print(list(keep.find(query='Papel')))
-    print(list(keep.find(**query_params(keep, **kwargs))))
+    for note in keep.find(**query_params(keep, **kwargs)):
+        params = COLORS.get(note.color, {})
+        note_id = (u'⚲ ' if note.pinned else '') + '(note id {})'.format(note.id)
+        note_id += u' 🗑' if note.deleted or note.trashed else ''
+        click.echo(click.style(note_id, **params))
+        click.echo(click.style('"' * len(note_id), **params))
+        if note.title:
+            click.echo(click.style(note.text, bold=True))
+        click.echo(note.text)
+        if note.labels:
+            click.echo()
+            click.echo(' '.join(click.style('[{}]'.format(label.name), underline=True, bold=True)
+                                for label in note.labels.all()))
+        click.echo(click.style('"' * len(note_id), **params))
+        click.echo('\n')
