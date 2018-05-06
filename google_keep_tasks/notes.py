@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import click
 import gkeepapi
+import sys
 
 from google_keep_tasks.exceptions import InvalidColor
 from google_keep_tasks.management import cli
@@ -68,6 +69,23 @@ def query_params(keep, **kwargs):
     return kwargs
 
 
+def print_note(note):
+    params = COLORS.get(note.color, {})
+    note_id = (u'⚲ ' if note.pinned else '') + '(note id {})'.format(note.id)
+    note_id += u' 🗑' if note.deleted or note.trashed else ''
+    click.echo(click.style(note_id, **params))
+    click.echo(click.style('"' * len(note_id), **params))
+    if note.title:
+        click.echo(click.style(note.title, bold=True))
+    click.echo(note.text)
+    if note.labels:
+        click.echo()
+        click.echo(' '.join(click.style('[{}]'.format(label.name), underline=True, bold=True)
+                            for label in note.labels.all()))
+    click.echo(click.style('"' * len(note_id), **params))
+    click.echo('\n')
+
+
 @cli.command('add-note')
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
@@ -96,19 +114,28 @@ def add_note(ctx, color, labels, title, text):
 @click.pass_context
 def search_notes(ctx, **kwargs):
     keep = ctx.obj['keep']
-    # print(list(keep.find(query='Papel')))
     for note in keep.find(**query_params(keep, **kwargs)):
-        params = COLORS.get(note.color, {})
-        note_id = (u'⚲ ' if note.pinned else '') + '(note id {})'.format(note.id)
-        note_id += u' 🗑' if note.deleted or note.trashed else ''
-        click.echo(click.style(note_id, **params))
-        click.echo(click.style('"' * len(note_id), **params))
-        if note.title:
-            click.echo(click.style(note.text, bold=True))
-        click.echo(note.text)
-        if note.labels:
-            click.echo()
-            click.echo(' '.join(click.style('[{}]'.format(label.name), underline=True, bold=True)
-                                for label in note.labels.all()))
-        click.echo(click.style('"' * len(note_id), **params))
-        click.echo('\n')
+        print_note(note)
+
+
+@cli.command('get-note')
+@click.argument('id', default=None, required=False)
+@click.option('--title', default=None)
+@click.argument('query', default='')
+@click.pass_context
+def get_note(ctx, **kwargs):
+    keep = ctx.obj['keep']
+    if kwargs.get('id'):
+        note = keep.get(kwargs.get('id'))
+    else:
+        kwargs.pop('id', None)
+        notes = keep.find(**query_params(keep, **kwargs))
+        try:
+            note = next(notes)
+        except StopIteration:
+            note = None
+    if note:
+        print_note(note)
+    else:
+        click.echo('The note was not found', err=True)
+        sys.exit(2)

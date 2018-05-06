@@ -1,3 +1,4 @@
 /.idea
 /auth.txt
 *.egg-info
+__pycache__
