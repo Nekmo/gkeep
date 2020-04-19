@@ -142,6 +142,34 @@ def get_note(ctx, **kwargs):
         sys.exit(2)
 
 
+@cli.command('update-note')
+@click.option('--title', default=None, required=False)
+@click.option('--text', default=None, required=False)
+@click.option('--filter-id', default=None, required=False)
+@click.option('--filter-title', default=None)
+@click.option('--filter-query', default='')
+@click.option('--color', default='', callback=get_click_color)
+@click.option('--labels', default='', callback=comma_separated)
+@click.pass_context
+def update_note(ctx, title, text, color, labels, filter_id, filter_title, filter_query):
+    keep = ctx.obj['keep']
+    note = get_note_instance(keep, id=filter_id, title=filter_title, query=filter_query)
+    if not note:
+        click.echo('The note was not found', err=True)
+        sys.exit(2)
+    updated = {}
+    for param in ['title', 'text', 'color', 'labels']:
+        value = locals()[param]
+        if value:
+            updated[param] = (getattr(note, param), value)
+            setattr(note, param, value)
+    if labels:
+        add_labels(keep, note, labels)
+    keep.sync()
+    click.echo('Updated note fields:\n\n' + ('\n'.join([u'{}: {} 🠞 {}'.format(param, values[0], values[1])
+                                                        for param, values in updated.items()])))
+
+
 @cli.command('delete-note')
 @click.argument('id', default=None, required=False)
 @click.option('--title', default=None)
