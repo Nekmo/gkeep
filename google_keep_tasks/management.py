@@ -9,7 +9,7 @@ from google_keep_tasks.exceptions import LoginError
 
 @click.group()
 @click.option('--debug/--no-debug', default=None)
-@click.option('--auth', default=None)
+@click.option('--auth', default='auth.txt')
 @click.pass_context
 def cli(ctx, debug, auth):
     keep = gkeepapi.Keep()
