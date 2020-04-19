@@ -86,6 +86,15 @@ def print_note(note):
     click.echo('\n')
 
 
+def get_note_instance(keep, id=None, **kwargs):
+    if id:
+        note = keep.get(id)
+    else:
+        notes = keep.find(**query_params(keep, **kwargs))
+        note = next(notes, None)
+    return note
+
+
 @cli.command('add-note')
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
@@ -121,21 +130,32 @@ def search_notes(ctx, **kwargs):
 @cli.command('get-note')
 @click.argument('id', default=None, required=False)
 @click.option('--title', default=None)
-@click.argument('query', default='')
+@click.option('--query', default='')
 @click.pass_context
 def get_note(ctx, **kwargs):
     keep = ctx.obj['keep']
-    if kwargs.get('id'):
-        note = keep.get(kwargs.get('id'))
-    else:
-        kwargs.pop('id', None)
-        notes = keep.find(**query_params(keep, **kwargs))
-        try:
-            note = next(notes)
-        except StopIteration:
-            note = None
+    note = get_note_instance(keep, **kwargs)
     if note:
         print_note(note)
+    else:
+        click.echo('The note was not found', err=True)
+        sys.exit(2)
+
+
+@cli.command('delete-note')
+@click.argument('id', default=None, required=False)
+@click.option('--title', default=None)
+@click.option('--query', default='')
+@click.pass_context
+def delete_note(ctx, **kwargs):
+    keep = ctx.obj['keep']
+    note = get_note_instance(keep, **kwargs)
+    if note and (note.deleted or note.trashed):
+        click.echo('The note "{}" had already been deleted.'.format(note.title))
+    elif note:
+        note.delete()
+        keep.sync()
+        click.echo('Note with title "{}" deleted.'.format(note.title))
     else:
         click.echo('The note was not found', err=True)
         sys.exit(2)
