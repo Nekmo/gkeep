@@ -2,8 +2,12 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 
 language: python
+cache: pip
 python:
   - 3.8
+script:
+  - pip install -r py3-requirements.txt
+  - make dist
 
 deploy:
   - provider: pypi
