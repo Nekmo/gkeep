@@ -116,6 +116,24 @@ For example:
     gkeep get-note 161d1ad8c82.b2ed17d26167c9bc
 
 
+Delete note
+-----------
+It works just like get-note. Delete a note by its id or by its title or text. If the id is unknown,
+you can use the ``--title`` and/or ``--text`` filters:
+
+The syntax is:
+
+.. code-block:: bash
+
+    gkeep delete-note[ <filters>][ <id>]
+
+For example:
+
+.. code-block:: bash
+
+    gkeep delete-note 161d1ad8c82.b2ed17d26167c9bc
+
+
 Items
 =====
 Notes can have multiple items with checkboxes. The common parameters for the items are:
