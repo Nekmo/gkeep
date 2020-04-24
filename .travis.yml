@@ -1,0 +1,14 @@
+# Config file for automatic testing at travis-ci.org
+# This file will be regenerated if you run travis_pypi_setup.py
+
+language: python
+python:
+  - 3.8
+
+deploy:
+  - provider: pypi
+    user: __token__
+    password:
+      secure: "st1VnPX1wBU0xc7rzCDeH48OFb0ML8bGSo0hxVYckfCGNwqpE+WEnnrYCH+X5MuTP7pHcvhNl0HU9sHYgxNLjnV/EQ/ay4xHnz65Mlhv/rzISCTCq5y6McsLzScENnqdyEsh78WmB4PRJ4D/2Y3VNSWw0sXmjviW4gQAa5wcf3cxEvxjtTSpzdnMUZOFbjWNjVmqRX4sGMapQhdpvQ/pE0rCFZ6HHjymKKRou0Y+M715eySH8Pe5XLL4zqWa6tUEAj7w6NijJW++rEdD34SrQIEzs5TuXceNNIdddBwehYvLNIFr8pSFW3pLMc0z37bAL2H8BS8uVh6Hr2G6PC4PVMzxfXmw+tHFIhNWDcxDQKBb8jHI7G5mVdEaIFkvBVhT1QqPEVQ+EMfmJA9OARRcrunhx40EM3a/NvSebmM4L9zoBMm6Qgsa7TOzbavhqdR4FotvwHbu2ZPZyhqP0cWe2vUnYnffv4i7g4+RjZ4JbodVPcj5DyFvPQ0a+Eq+NlBJ422pCZQOxUADc53rLZR5jnXORMiaikVFulKfCP+Fgbi3giFgbD1xZ41I6Ezwz9eRiQpLKnBXR2bP3PhRdw+LKz3B2hP2ClugBjQ9/S2ghVbZlm6ptSyswWU2ifyMd7wLkCaHAlPmzWheLRVACljbPw+QOd9axfQR5U9Xmm7L0Ng="
+    on:
+      tags: true
