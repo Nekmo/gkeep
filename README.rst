@@ -26,6 +26,30 @@ You can also use the ``--auth`` parameter to set the path to the file with the c
     gkeep --auth /path/to/auth.txt
 
 
+Notes
+=====
+It is possible to create, delete, update and view the notes in Google keep. The common parameters are:
+
+* ``<title>``: Title to add to the note
+* ``<text>``: Note message body
+
+
+Add note
+--------
+It is possible to add a new note to Google Keep:
+
+.. code-block:: bash
+
+    gkeep add-note[ --color <color>][--labels <labels>] <title> <text>
+
+For example:
+
+.. code-block:: bash
+
+    gkeep add-note "Today's tasks" "Install gkeep cli and configure it"
+
+
+
 Items
 =====
 Notes can have multiple items with checkboxes. The common parameters for the items are:
