@@ -30,8 +30,10 @@ Notes
 =====
 It is possible to create, delete, update and view the notes in Google keep. The common parameters are:
 
-* ``<title>``: Title to add to the note
-* ``<text>``: Note message body
+* ``title``: Title to add to the note.
+* ``text``: Note message body.
+* ``color``: color used in the note.
+* ``labels``: tags added to notes.
 
 
 Add note
@@ -47,6 +49,27 @@ For example:
 .. code-block:: bash
 
     gkeep add-note "Today's tasks" "Install gkeep cli and configure it"
+
+
+Update note
+-----------
+It is possible to edit an existing note. The following parameters are available to choose the note to edit:
+
+* ``--filter-id``: id of the note. This is the preferred way to ensure editing the correct note.
+* ``--filter-title``: note title. Warning: The titles of the notes are not unique.
+* ``--filter-query``: search in titles and body of the notes. This is the least accurate filter.
+
+The syntax is:
+
+.. code-block:: bash
+
+    gkeep update-note <filter>[ --color <color>][--labels <labels>][ --title <title>][ --text <text>]
+
+For example:
+
+.. code-block:: bash
+
+    gkeep update-note --filter-title "Today's tasks" --text "GKeep installed, continue reading the docs"
 
 
 
