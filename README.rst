@@ -78,11 +78,10 @@ Search notes
 The ``search-notes`` command allows you to search for notes and add filters. In addition to the ``--color``,
 ``--labels``, ``--title`` and ``--text`` filters the following filters are available:
 
-
-  * ``--deleted`` / ``--not-deleted``: the note is deleted or not.
-  * ``--trashed`` / ``--not-trashed``: the note is trashed or not.
-  * ``--pinned`` / ``--not-pinned``: the note is pinned or not.
-  * ``--archived`` / ``--not-archived``: the note is archived or not.
+* ``--deleted`` / ``--not-deleted``: the note is deleted or not.
+* ``--trashed`` / ``--not-trashed``: the note is trashed or not.
+* ``--pinned`` / ``--not-pinned``: the note is pinned or not.
+* ``--archived`` / ``--not-archived``: the note is archived or not.
 
 The syntax is:
 
