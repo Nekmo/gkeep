@@ -53,7 +53,8 @@ For example:
 
 Update note
 -----------
-It is possible to edit an existing note. The following parameters are available to choose the note to edit:
+It is possible to edit an existing note. The following parameters are available to choose the note to edit
+(in this command all filters have the prefix ``filter-``):
 
 * ``--filter-id``: id of the note. This is the preferred way to ensure editing the correct note.
 * ``--filter-title``: note title. Warning: The titles of the notes are not unique.
@@ -71,6 +72,29 @@ For example:
 
     gkeep update-note --filter-title "Today's tasks" --text "GKeep installed, continue reading the docs"
 
+
+Search notes
+------------
+The ``search-notes`` command allows you to search for notes and add filters. In addition to the ``--color``,
+``--labels``, ``--title`` and ``--text`` filters the following filters are available:
+
+
+  * ``--deleted`` / ``--not-deleted``: the note is deleted or not.
+  * ``--trashed`` / ``--not-trashed``: the note is trashed or not.
+  * ``--pinned`` / ``--not-pinned``: the note is pinned or not.
+  * ``--archived`` / ``--not-archived``: the note is archived or not.
+
+The syntax is:
+
+.. code-block:: bash
+
+    gkeep search-notes[ <filters>][ <query>]
+
+For example (the text "GKeep installed" is a search term):
+
+.. code-block:: bash
+
+    gkeep search-notes --not-deleted "GKeep installed"
 
 
 Items
