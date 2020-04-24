@@ -51,8 +51,8 @@ For example:
     gkeep add-note "Today's tasks" "Install gkeep cli and configure it"
 
 
-Update note
------------
+Edit note
+---------
 It is possible to edit an existing note. The following parameters are available to choose the note to edit
 (in this command all filters have the prefix ``filter-``):
 
@@ -64,13 +64,13 @@ The syntax is:
 
 .. code-block:: bash
 
-    gkeep update-note <filter>[ --color <color>][--labels <labels>][ --title <title>][ --text <text>]
+    gkeep edit-note <filter>[ --color <color>][--labels <labels>][ --title <title>][ --text <text>]
 
 For example:
 
 .. code-block:: bash
 
-    gkeep update-note --filter-title "Today's tasks" --text "GKeep installed, continue reading the docs"
+    gkeep edit-note --filter-title "Today's tasks" --text "GKeep installed, continue reading the docs"
 
 
 Search notes

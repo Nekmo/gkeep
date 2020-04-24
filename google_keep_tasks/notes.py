@@ -142,7 +142,7 @@ def get_note(ctx, **kwargs):
         sys.exit(2)
 
 
-@cli.command('update-note')
+@cli.command('edit-note')
 @click.option('--title', default=None, required=False)
 @click.option('--text', default=None, required=False)
 @click.option('--filter-id', default=None, required=False)
@@ -151,7 +151,7 @@ def get_note(ctx, **kwargs):
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
 @click.pass_context
-def update_note(ctx, title, text, color, labels, filter_id, filter_title, filter_query):
+def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_query):
     keep = ctx.obj['keep']
     note = get_note_instance(keep, id=filter_id, title=filter_title, query=filter_query)
     if not note:
