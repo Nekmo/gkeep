@@ -25,6 +25,10 @@ class LoginError(GKeepError):
     body = 'Check credentials file. The syntax is: <username> <password>.'
 
 
+class UnavailableLoginError(GKeepError):
+    body = 'Unavailable credentials'
+
+
 class InvalidColor(GKeepError):
     def __init__(self, invalid_color):
         import gkeepapi
