@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Package description
+"""Google Keep Command Line Interface (CLI)
 """
 from setuptools import setup, find_packages
 from distutils.version import LooseVersion
@@ -279,7 +279,7 @@ setup(
     name=PACKAGE_NAME,
     version=package_version,
 
-    description=__doc__,
+    description=__doc__.strip(),
     long_description=long_description,
 
     author=AUTHOR,
