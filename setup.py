@@ -11,11 +11,6 @@ import sys
 import uuid
 import pip
 
-if LooseVersion(pip.__version__) >= "10.0.0":
-    from pip._internal.req import parse_requirements
-else:
-    from pip.req import parse_requirements
-
 
 ###############################
 #  Configuración del paquete  #
@@ -54,9 +49,6 @@ PLATFORMS = [
 ]
 ROOT_INCLUDE = [
     'requirements.txt',
-    'common-requirements.txt',
-    'py2-requirements.txt',
-    'py3-requirements.txt',
     'VERSION',
     'LICENSE.txt'
 ]
@@ -72,7 +64,7 @@ readme_path = os.path.join(__dir__, 'README')
 if not os.path.exists(readme_path):
     readme_path = os.path.join(__dir__, 'README.rst')
 version_path = os.path.join(__dir__, 'VERSION')
-requirements_path = os.path.join(__dir__, 'py{}-requirements.txt'.format(sys.version_info.major))
+requirements_path = os.path.join(__dir__, 'requirements.txt')
 scripts_path = os.path.join(__dir__, 'scripts')
 
 
@@ -175,15 +167,6 @@ def find_package_data(where='.', package='',
 
 ##############################################################################
 
-# Lista de dependencias a instalar
-if os.path.exists(requirements_path):
-    requirements = parse_requirements(requirements_path, session=uuid.uuid1())
-    install_requires = [str(ir.req) for ir in requirements if not get_url(ir)]
-    dependency_links = [get_url(ir) for ir in requirements if get_url(ir)]
-else:
-    install_requires = []
-    dependency_links = []
-
 # Todos los módulos y submódulos a instalar (module, module.submodule, module.submodule2...)
 packages = find_packages(__dir__)
 # Prevent include symbolic links
@@ -283,6 +266,15 @@ CLASSIFIERS.extend([
     'Development Status :: {} - {}'.format(STATUS_LEVEL, status_name),
 ])
 
+
+def read_file(file):
+    with open(file, 'r') as f:
+        return f.read()
+
+
+install_requires = read_file(requirements_path)
+
+
 setup(
     name=PACKAGE_NAME,
     version=package_version,
@@ -301,7 +293,6 @@ setup(
 
     provides=modules,
     install_requires=install_requires,
-    dependency_links=dependency_links,
 
     packages=packages,
     include_package_data=True,
