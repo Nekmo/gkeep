@@ -2,6 +2,11 @@
 History
 =======
 
+0.2.1 (2020-05-09)
+------------------
+
+* Issue #26: Do not use the pip's internal api as it isn't working anymore
+
 
 0.2.0 (2020-04-25)
 ------------------
