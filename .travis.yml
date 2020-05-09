@@ -6,7 +6,7 @@ cache: pip
 python:
   - 3.8
 script:
-  - pip install -r py3-requirements.txt
+  - pip install -r requirements.txt
   - make dist
 
 deploy:
