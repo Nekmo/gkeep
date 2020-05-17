@@ -1,7 +1,7 @@
 import click
 
 from google_keep_tasks.exceptions import ItemNotFound
-from google_keep_tasks.management import cli
+# from google_keep_tasks.management import cli
 
 
 def search_item(items, text):
@@ -11,7 +11,12 @@ def search_item(items, text):
     raise ItemNotFound(text)
 
 
-@cli.command('add-item')
+@click.group()
+def items():
+    pass
+
+
+@items.command('add')
 @click.option('--check/--uncheck', default=None)
 @click.option('--duplicate/--no-duplicate', default=False)
 @click.argument('id')
@@ -33,7 +38,7 @@ def add_item(ctx, check, duplicate, id, text):
     keep.sync()
 
 
-@cli.command('edit-item')
+@items.command('edit')
 @click.option('--check/--uncheck', default=None)
 @click.option('--new-text', default='')
 @click.argument('id')
@@ -48,7 +53,7 @@ def edit_item(ctx, check, new_text, id, text):
     keep.sync()
 
 
-@cli.command('delete-item')
+@items.command('delete')
 @click.argument('id')
 @click.argument('text')
 @click.pass_context
@@ -60,7 +65,7 @@ def delete_item(ctx, id, text):
     keep.sync()
 
 
-@cli.command('is-checked-item')
+@items.command('is-checked')
 @click.argument('id')
 @click.argument('text')
 @click.pass_context

@@ -1,10 +1,10 @@
+import sys
+
 import click
 
-import gkeepapi
-from gkeepapi.exception import LoginException
-
-from google_keep_tasks.auth import get_auth, GoogleKeepFileAuth, GoogleKeep
-from google_keep_tasks.exceptions import LoginError
+from google_keep_tasks.auth import GoogleKeep
+from google_keep_tasks.items import items
+from google_keep_tasks.notes import notes
 
 
 @click.group()
@@ -13,9 +13,10 @@ from google_keep_tasks.exceptions import LoginError
 @click.pass_context
 def cli(ctx, debug, auth):
     google_keep = GoogleKeep()
-    google_keep.login_or_input()
+    if sys.argv[-1] not in ctx.help_option_names:
+        google_keep.login_or_input()
     ctx.obj = {'keep': google_keep.keep}
 
 
-import google_keep_tasks.items
-import google_keep_tasks.notes
+cli.add_command(items)
+cli.add_command(notes)

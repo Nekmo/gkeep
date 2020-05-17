@@ -4,7 +4,6 @@ import gkeepapi
 import sys
 
 from google_keep_tasks.exceptions import InvalidColor
-from google_keep_tasks.management import cli
 
 
 COLORS = {
@@ -95,7 +94,12 @@ def get_note_instance(keep, id=None, **kwargs):
     return note
 
 
-@cli.command('add-note')
+@click.group()
+def notes():
+    pass
+
+
+@notes.command('add')
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
 @click.argument('title')
@@ -110,7 +114,7 @@ def add_note(ctx, color, labels, title, text):
     keep.sync()
 
 
-@cli.command('search-notes')
+@notes.command('search')
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
 @click.option('--deleted/--not-deleted', default=None)
@@ -127,7 +131,7 @@ def search_notes(ctx, **kwargs):
         print_note(note)
 
 
-@cli.command('get-note')
+@notes.command('get')
 @click.argument('id', default=None, required=False)
 @click.option('--title', default=None)
 @click.option('--query', default='')
@@ -142,7 +146,7 @@ def get_note(ctx, **kwargs):
         sys.exit(2)
 
 
-@cli.command('edit-note')
+@notes.command('edit')
 @click.option('--title', default=None, required=False)
 @click.option('--text', default=None, required=False)
 @click.option('--filter-id', default=None, required=False)
@@ -170,7 +174,7 @@ def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_q
                                                         for param, values in updated.items()])))
 
 
-@cli.command('delete-note')
+@notes.command('delete')
 @click.argument('id', default=None, required=False)
 @click.option('--title', default=None)
 @click.option('--query', default='')
