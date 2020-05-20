@@ -97,18 +97,36 @@ def get_note_instance(keep, id=None, **kwargs):
 
 @click.group()
 def notes():
+    """Gkeep can manage Google Keep notes using ``notes`` command.
+    This command has subcommands for adding, searching, editing, or
+    deleting notes. To see all subcommands of ``notes`` use ``--help``::
+
+        gkeep notes --help
+
+    An example of a subcommand is ``add``. To see help use
+    ``gkeep notes add --help``.
+    """
     pass
 
 
 @notes.command('add')
 @click.option('--color', default='', callback=get_click_color,
-              help='Change the note color')
+              help='Filter by note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
 @click.option('--labels', default='', callback=comma_separated,
-              help='Change the note labels. Add multiple labels separated by commas.')
+              help='Set note labels. Add multiple labels separated by commas')
 @click.argument('title')
 @click.argument('text')
 @click.pass_context
 def add_note(ctx, color, labels, title, text):
+    """Add a new note to Google Keep. Add a new note to Google Keep.
+    A title and a message body are required for the new note. For example:
+
+    .. code-block:: shell
+
+        gkeep notes add "Today's tasks" "Install gkeep cli and configure it"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     gnote = keep.createNote(title, text)
     if color:
@@ -119,7 +137,7 @@ def add_note(ctx, color, labels, title, text):
 
 @notes.command('search')
 @click.option('--color', default='', callback=get_click_color,
-              help='Filter by note color. Choices: {}'.format(COLOR_NAMES))
+              help='Filter by note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
 @click.option('--labels', default='', callback=comma_separated,
               help='Filter by label notes. Filter by multiple labels separated by commas.')
 @click.option('--deleted/--not-deleted', default=None,
@@ -137,6 +155,14 @@ def add_note(ctx, color, labels, title, text):
 @click.argument('query', default='')
 @click.pass_context
 def search_notes(ctx, **kwargs):
+    """Search for notes using filters or/and use query text. For example:
+
+    .. code-block:: shell
+
+        gkeep notes search --not-deleted "GKeep installed"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     for note in keep.find(**query_params(keep, **kwargs)):
         print_note(note)
@@ -149,6 +175,15 @@ def search_notes(ctx, **kwargs):
 @click.option('--query', default='', help='Search in any note field')
 @click.pass_context
 def get_note(ctx, **kwargs):
+    """Get a note by its id or by its title or text. If the id is unknown,
+    you can use the ``--title`` and/or ``--text`` filters. For example:
+
+    .. code-block:: shell
+
+        gkeep notes get 161d1ad8c82.b2ed17d26167c9bc
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     note = get_note_instance(keep, **kwargs)
     if note:
@@ -169,10 +204,21 @@ def get_note(ctx, **kwargs):
               help='Filter by note title. The titles of the notes are not unique')
 @click.option('--filter-query', default='',
               help='search in titles and body of the notes. This is the least accurate filter')
-@click.option('--color', default='', callback=get_click_color)
-@click.option('--labels', default='', callback=comma_separated)
+@click.option('--color', default='', callback=get_click_color,
+              help='Cahange note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
+@click.option('--labels', default='', callback=comma_separated,
+              help='Set note labels')
 @click.pass_context
 def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_query):
+    """It is possible to edit an existing note. The following parameters
+    are available to choose the note to edit. For example:
+
+    .. code-block:: shell
+
+        gkeep notes edit --filter-title "Today's tasks" --text "GKeep installed, continue reading the docs"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     note = get_note_instance(keep, id=filter_id, title=filter_title, query=filter_query)
     if not note:
@@ -197,6 +243,16 @@ def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_q
 @click.option('--query', default='', help='Search in any note field')
 @click.pass_context
 def delete_note(ctx, **kwargs):
+    """It works just like get-note. Delete a note by its id or by its title
+    or text. If the id is unknown, you can use the --title and/or --text filters.
+    For example:
+
+    .. code-block:: shell
+
+        gkeep notes delete 161d1ad8c82.b2ed17d26167c9bc
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     note = get_note_instance(keep, **kwargs)
     if note and (note.deleted or note.trashed):
