@@ -135,8 +135,16 @@ html_theme = os.environ.get('HTML_THEME', 'alabaster')
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    # 'logo': 'logo.png',
-    # 'description': 'Google Keep CLI',
+    'logo': 'logo.png',
+    'description': 'Google Keep Command Line Interface (CLI)',
+    'github_user': 'Nekmo',
+    'github_repo': 'gkeep',
+    'github_type': 'star',
+    'github_banner': True,
+    'travis_button': True,
+    'codecov_button': True,
+    'analytics_id': 'UA-62276079-1',
+    'canonical_url': 'http://docs.nekmo.org/gkeep/'
 }
 
 
