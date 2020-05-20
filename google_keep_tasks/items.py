@@ -17,8 +17,10 @@ def items():
 
 
 @items.command('add')
-@click.option('--check/--uncheck', default=None)
-@click.option('--duplicate/--no-duplicate', default=False)
+@click.option('--check/--uncheck', default=None, help='Item is checked or not')
+@click.option('--duplicate/--no-duplicate', default=False,
+              help='By default if the element already exists, it is not duplicated. '
+                   'If you want duplicate the element, use the this parameter')
 @click.argument('id')
 @click.argument('text')
 @click.pass_context
@@ -39,8 +41,8 @@ def add_item(ctx, check, duplicate, id, text):
 
 
 @items.command('edit')
-@click.option('--check/--uncheck', default=None)
-@click.option('--new-text', default='')
+@click.option('--check/--uncheck', default=None, help='Item is checked or not')
+@click.option('--new-text', default='New element text')
 @click.argument('id')
 @click.argument('text')
 @click.pass_context

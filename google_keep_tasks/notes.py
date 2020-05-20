@@ -16,6 +16,7 @@ COLORS = {
     gkeepapi.node.ColorValue.Purple: {'bg': 'magenta', 'fg': 'white'},
     gkeepapi.node.ColorValue.White: {'bg': 'white', 'fg': 'black'},
 }
+COLOR_NAMES = [color.name.lower() for color in gkeepapi.node.ColorValue]
 
 
 def get_color(color):
@@ -100,8 +101,10 @@ def notes():
 
 
 @notes.command('add')
-@click.option('--color', default='', callback=get_click_color)
-@click.option('--labels', default='', callback=comma_separated)
+@click.option('--color', default='', callback=get_click_color,
+              help='Change the note color')
+@click.option('--labels', default='', callback=comma_separated,
+              help='Change the note labels. Add multiple labels separated by commas.')
 @click.argument('title')
 @click.argument('text')
 @click.pass_context
@@ -115,14 +118,22 @@ def add_note(ctx, color, labels, title, text):
 
 
 @notes.command('search')
-@click.option('--color', default='', callback=get_click_color)
-@click.option('--labels', default='', callback=comma_separated)
-@click.option('--deleted/--not-deleted', default=None)
-@click.option('--trashed/--not-trashed', default=None)
-@click.option('--pinned/--not-pinned', default=None)
-@click.option('--archived/--not-archived', default=None)
-@click.option('--title', default=None)
-@click.option('--text', default=None)
+@click.option('--color', default='', callback=get_click_color,
+              help='Filter by note color. Choices: {}'.format(COLOR_NAMES))
+@click.option('--labels', default='', callback=comma_separated,
+              help='Filter by label notes. Filter by multiple labels separated by commas.')
+@click.option('--deleted/--not-deleted', default=None,
+              help='Filter by deleted notes or not')
+@click.option('--trashed/--not-trashed', default=None,
+              help='Filter by deleted notes or not')
+@click.option('--pinned/--not-pinned', default=None,
+              help='Filter by pinned notes or not')
+@click.option('--archived/--not-archived', default=None,
+              help='Filter by archived notes or not')
+@click.option('--title', default=None,
+              help='Filter by title note')
+@click.option('--text', default=None,
+              help='Search in note content')
 @click.argument('query', default='')
 @click.pass_context
 def search_notes(ctx, **kwargs):
@@ -133,8 +144,9 @@ def search_notes(ctx, **kwargs):
 
 @notes.command('get')
 @click.argument('id', default=None, required=False)
-@click.option('--title', default=None)
-@click.option('--query', default='')
+@click.option('--title', default=None,
+              help='Filter by title note')
+@click.option('--query', default='', help='Search in any note field')
 @click.pass_context
 def get_note(ctx, **kwargs):
     keep = ctx.obj['keep']
@@ -147,11 +159,16 @@ def get_note(ctx, **kwargs):
 
 
 @notes.command('edit')
-@click.option('--title', default=None, required=False)
-@click.option('--text', default=None, required=False)
-@click.option('--filter-id', default=None, required=False)
-@click.option('--filter-title', default=None)
-@click.option('--filter-query', default='')
+@click.option('--title', default=None, required=False,
+              help='Change the note title')
+@click.option('--text', default=None, required=False,
+              help='Change the note text')
+@click.option('--filter-id', default=None, required=False,
+              help='Filter by id note. This is the preferred way to ensure editing the correct note')
+@click.option('--filter-title', default=None,
+              help='Filter by note title. The titles of the notes are not unique')
+@click.option('--filter-query', default='',
+              help='search in titles and body of the notes. This is the least accurate filter')
 @click.option('--color', default='', callback=get_click_color)
 @click.option('--labels', default='', callback=comma_separated)
 @click.pass_context
@@ -176,8 +193,8 @@ def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_q
 
 @notes.command('delete')
 @click.argument('id', default=None, required=False)
-@click.option('--title', default=None)
-@click.option('--query', default='')
+@click.option('--title', default=None, help='Filter by title note')
+@click.option('--query', default='', help='Search in any note field')
 @click.pass_context
 def delete_note(ctx, **kwargs):
     keep = ctx.obj['keep']
