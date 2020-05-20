@@ -13,7 +13,17 @@ def search_item(items, text):
 
 @click.group()
 def items():
-    pass
+    """Notes can have multiple checkbox items. Gkeep can manage
+    these checkboxes using ``items`` command. This command has subcommands for adding,
+    editing, deleting or check/uncheck items. To see all subcommands of ``items`` use
+    ``--help``::
+
+        gkeep items --help
+
+    An example of a subcommand is ``add``. To see help use
+    ``gkeep items add --help``.  In all ``items`` subcommands, note ``id`` argument is
+    mandatory. To get note ``id`` use ``gkeep notes search`` or ``gkeep notes get``.
+    """
 
 
 @items.command('add')
@@ -25,6 +35,16 @@ def items():
 @click.argument('text')
 @click.pass_context
 def add_item(ctx, check, duplicate, id, text):
+    """Add a item to an existing note. By default if the element already exists,
+    it is not duplicated. To duplicate the element use ``--duplicate`` param. By
+    default the item is created unchecked.
+
+    .. code-block:: shell
+
+        gkeep items add 75e4202b0c1.9fc0b868a7b34952 "Chip cookies" --check
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     gnote = keep.get(id)
     try:
@@ -47,6 +67,22 @@ def add_item(ctx, check, duplicate, id, text):
 @click.argument('text')
 @click.pass_context
 def edit_item(ctx, check, new_text, id, text):
+    """Edit an existing item. Use this command to change the text or
+    check or uncheck the item. For example:
+
+    .. code-block:: shell
+
+        gkeep items edit 75e4202b0c1.9fc0b868a7b34952 "Chip cookies" --uncheck
+
+    Another example:
+
+    .. code-block:: shell
+
+        gkeep items edit 75e4202b0c1.9fc0b868a7b34952 "Chip cookies"
+                         --new-text "Chocolate orange cookies"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
@@ -60,6 +96,14 @@ def edit_item(ctx, check, new_text, id, text):
 @click.argument('text')
 @click.pass_context
 def delete_item(ctx, id, text):
+    """Delete a item to an existing note.
+
+    .. code-block:: shell
+
+        gkeep items delete 75e4202b0c1.9fc0b868a7b34952 "Chip cookies"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)
@@ -72,6 +116,14 @@ def delete_item(ctx, id, text):
 @click.argument('text')
 @click.pass_context
 def delete_item(ctx, id, text):
+    """Returns ``True`` if the item is checked and ``False`` if it is unchecked.
+
+    .. code-block:: shell
+
+        gkeep items is-checked 75e4202b0c1.9fc0b868a7b34952 "Chip cookies"
+
+    The syntax is:
+    """
     keep = ctx.obj['keep']
     gnote = keep.get(id)
     item = search_item(gnote.items, text)

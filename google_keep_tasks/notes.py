@@ -118,7 +118,7 @@ def notes():
 @click.argument('text')
 @click.pass_context
 def add_note(ctx, color, labels, title, text):
-    """Add a new note to Google Keep. Add a new note to Google Keep.
+    """Add a new note to Google Keep.
     A title and a message body are required for the new note. For example:
 
     .. code-block:: shell
