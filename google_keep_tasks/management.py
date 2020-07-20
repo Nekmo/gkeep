@@ -4,6 +4,7 @@ import click
 
 from google_keep_tasks.auth import GoogleKeep
 from google_keep_tasks.items import items
+from google_keep_tasks.labels import labels
 from google_keep_tasks.notes import notes
 
 
@@ -19,3 +20,4 @@ def cli(ctx, debug):
 
 cli.add_command(items)
 cli.add_command(notes)
+cli.add_command(labels)
