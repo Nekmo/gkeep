@@ -303,9 +303,9 @@ setup(
 
     download_url=PACKAGE_DOWNLOAD_URL,
     keywords=KEYWORDS,
-    scripts=scripts,
 
-    # entry_points={},
+    entry_points={'console_scripts':
+                      ['gkeep = google_keep_tasks.management:cli']},
 
     zip_safe=False,
 )
