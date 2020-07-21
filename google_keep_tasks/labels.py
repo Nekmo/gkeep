@@ -98,3 +98,29 @@ def edit_label(ctx, old_title, title):
     label.name = title
     keep.sync()
     click.echo(f'Renamed label {old_title} to {title}')
+
+
+@labels.command('delete')
+@click.argument('title')
+@click.pass_context
+def edit_label(ctx, title):
+    """Delete a label. For example:
+
+    .. code-block:: shell
+
+        gkeep labels delete "Label name"
+
+    The syntax is:
+    """
+    keep = ctx.obj['keep']
+    label = keep.findLabel(title)
+    if label and (label.deleted or label.trashed):
+        click.echo(u'The label "{}" had already been deleted.'.format(title), err=True)
+        sys.exit(2)
+    elif label:
+        keep.deleteLabel(label)
+        keep.sync()
+        click.echo('Label "{}" deleted.'.format(title))
+    else:
+        click.echo('The label was not found', err=True)
+        sys.exit(2)
