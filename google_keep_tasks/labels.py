@@ -71,3 +71,30 @@ def add_label(ctx, title):
         sys.exit(3)
     keep.sync()
     click.echo(f'Created label {title}')
+
+
+@labels.command('edit')
+@click.argument('old_title')
+@click.argument('title')
+@click.pass_context
+def edit_label(ctx, old_title, title):
+    """Rename a label title. For example:
+
+    .. code-block:: shell
+
+        gkeep labels edit "Old title" "New title"
+
+    The syntax is:
+    """
+    keep = ctx.obj['keep']
+    label = keep.findLabel(old_title)
+    if not label:
+        click.echo(u'The label was not found', err=True)
+        sys.exit(2)
+    new_label = keep.findLabel(title)
+    if new_label:
+        click.echo(u'The label {} already exists'.format(title), err=True)
+        sys.exit(2)
+    label.name = title
+    keep.sync()
+    click.echo(f'Renamed label {old_title} to {title}')
