@@ -22,6 +22,8 @@ COLOR_NAMES = [color.name.lower() for color in gkeepapi.node.ColorValue]
 def get_color(color):
     if not color:
         return
+    if isinstance(color, gkeepapi.node.ColorValue):
+        return color
     color = color.title()
     if color and not hasattr(gkeepapi.node.ColorValue, color):
         raise InvalidColor(color)
