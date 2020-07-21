@@ -205,11 +205,15 @@ def get_note(ctx, **kwargs):
 @click.option('--filter-query', default='',
               help='search in titles and body of the notes. This is the least accurate filter')
 @click.option('--color', default='', callback=get_click_color,
-              help='Cahange note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
+              help='Change note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
+@click.option('--archived/--not-archived', default=None,
+              help='Archive or unarchive note.')
+@click.option('--pinned/--not-pinned', default=None,
+              help='Pin or unpin note.')
 @click.option('--labels', default='', callback=comma_separated,
               help='Set note labels')
 @click.pass_context
-def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_query):
+def edit_note(ctx, title, text, color, labels, archived, pinned, filter_id, filter_title, filter_query):
     """It is possible to edit an existing note. The following parameters
     are available to choose the note to edit. For example:
 
@@ -225,9 +229,10 @@ def edit_note(ctx, title, text, color, labels, filter_id, filter_title, filter_q
         click.echo('The note was not found', err=True)
         sys.exit(2)
     updated = {}
-    for param in ['title', 'text', 'color', 'labels']:
+    boolean_nullables = ['archived', 'pinned']  # 3 state params
+    for param in ['title', 'text', 'color', 'labels'] + boolean_nullables:
         value = locals()[param]
-        if value:
+        if value or (param in boolean_nullables and value is not None):
             updated[param] = (getattr(note, param), value)
             setattr(note, param, value)
     if labels:
