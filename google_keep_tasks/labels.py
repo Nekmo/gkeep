@@ -33,7 +33,7 @@ def labels():
     pass
 
 
-@labels.command('list')
+@labels.command('list', options_metavar='[options]')
 @click.option('--timestamps', is_flag=True, help='Include timestaps per each label.')
 @click.pass_context
 def list_labels(ctx, timestamps):
@@ -52,8 +52,8 @@ def list_labels(ctx, timestamps):
     ))
 
 
-@labels.command('add')
-@click.argument('title')
+@labels.command('add', options_metavar='[options]')
+@click.argument('title', metavar='<title>')
 @click.pass_context
 def add_label(ctx, title):
     """Create a label on Google Keep. For example:
@@ -74,9 +74,9 @@ def add_label(ctx, title):
     click.echo(f'Created label {title}')
 
 
-@labels.command('edit')
-@click.argument('old_title')
-@click.argument('title')
+@labels.command('edit', options_metavar='[options]')
+@click.argument('old_title', metavar='<old_title>')
+@click.argument('title', metavar='<new_title>')
 @click.pass_context
 def edit_label(ctx, old_title, title):
     """Rename a label title. For example:
@@ -101,8 +101,8 @@ def edit_label(ctx, old_title, title):
     click.echo(f'Renamed label {old_title} to {title}')
 
 
-@labels.command('delete')
-@click.argument('title')
+@labels.command('delete', options_metavar='[options]')
+@click.argument('title', metavar='<title>')
 @click.pass_context
 def edit_label(ctx, title):
     """Delete a label. For example:

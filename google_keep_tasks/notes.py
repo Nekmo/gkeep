@@ -112,13 +112,13 @@ def notes():
     pass
 
 
-@notes.command('add')
-@click.option('--color', default='', callback=get_click_color,
+@notes.command('add', options_metavar='[options]')
+@click.option('--color', default='', callback=get_click_color, metavar='<color>',
               help='Filter by note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
-@click.option('--labels', default='', callback=comma_separated,
+@click.option('--labels', default='', callback=comma_separated, metavar='<label>',
               help='Set note labels. Add multiple labels separated by commas')
-@click.argument('title')
-@click.argument('text')
+@click.argument('title', metavar='<title>')
+@click.argument('text', metavar='<note_content>')
 @click.pass_context
 def add_note(ctx, color, labels, title, text):
     """Add a new note to Google Keep.
@@ -138,10 +138,10 @@ def add_note(ctx, color, labels, title, text):
     keep.sync()
 
 
-@notes.command('search')
-@click.option('--color', default='', callback=get_click_color,
+@notes.command('search', options_metavar='[options]')
+@click.option('--color', default='', callback=get_click_color, metavar='<color>',
               help='Filter by note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
-@click.option('--labels', default='', callback=comma_separated,
+@click.option('--labels', default='', callback=comma_separated, metavar='<labels>',
               help='Filter by label notes. Filter by multiple labels separated by commas.')
 @click.option('--deleted/--not-deleted', default=None,
               help='Filter by deleted notes or not')
@@ -151,11 +151,11 @@ def add_note(ctx, color, labels, title, text):
               help='Filter by pinned notes or not')
 @click.option('--archived/--not-archived', default=None,
               help='Filter by archived notes or not')
-@click.option('--title', default=None,
+@click.option('--title', default=None, metavar='<title>',
               help='Filter by title note')
-@click.option('--text', default=None,
+@click.option('--text', default=None, metavar='<note_content>',
               help='Search in note content')
-@click.argument('query', default='')
+@click.argument('query', default='', metavar='[query]')
 @click.pass_context
 def search_notes(ctx, **kwargs):
     """Search for notes using filters or/and use query text. For example:
@@ -171,11 +171,11 @@ def search_notes(ctx, **kwargs):
         print_note(note)
 
 
-@notes.command('get')
-@click.argument('id', default=None, required=False)
+@notes.command('get', options_metavar='[options]')
+@click.argument('id', default=None, required=False, metavar='[id]')
 @click.option('--title', default=None,
-              help='Filter by title note')
-@click.option('--query', default='', help='Search in any note field')
+              help='Filter by title note', metavar='<title>')
+@click.option('--query', default='', help='Search in any note field', metavar='<term>')
 @click.pass_context
 def get_note(ctx, **kwargs):
     """Get a note by its id or by its title or text. If the id is unknown,
@@ -196,24 +196,24 @@ def get_note(ctx, **kwargs):
         sys.exit(2)
 
 
-@notes.command('edit')
-@click.option('--title', default=None, required=False,
+@notes.command('edit', options_metavar='[options]')
+@click.option('--title', default=None, required=False, metavar='<new title>',
               help='Change the note title')
-@click.option('--text', default=None, required=False,
+@click.option('--text', default=None, required=False, metavar='<new_note_content>',
               help='Change the note text')
-@click.option('--filter-id', default=None, required=False,
+@click.option('--filter-id', default=None, required=False, metavar='<id>',
               help='Filter by id note. This is the preferred way to ensure editing the correct note')
-@click.option('--filter-title', default=None,
+@click.option('--filter-title', default=None, metavar='<title>',
               help='Filter by note title. The titles of the notes are not unique')
-@click.option('--filter-query', default='',
+@click.option('--filter-query', default='', metavar='<term>',
               help='search in titles and body of the notes. This is the least accurate filter')
-@click.option('--color', default='', callback=get_click_color,
+@click.option('--color', default='', callback=get_click_color, metavar='<color>',
               help='Change note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
 @click.option('--archived/--not-archived', default=None,
               help='Archive or unarchive note.')
 @click.option('--pinned/--not-pinned', default=None,
               help='Pin or unpin note.')
-@click.option('--labels', default='', callback=comma_separated,
+@click.option('--labels', default='', callback=comma_separated, metavar='<new labels>',
               help='Set note labels')
 @click.pass_context
 def edit_note(ctx, title, text, color, labels, archived, pinned, filter_id, filter_title, filter_query):
@@ -245,10 +245,10 @@ def edit_note(ctx, title, text, color, labels, archived, pinned, filter_id, filt
                                                         for param, values in updated.items()])))
 
 
-@notes.command('delete')
-@click.argument('id', default=None, required=False)
-@click.option('--title', default=None, help='Filter by title note')
-@click.option('--query', default='', help='Search in any note field')
+@notes.command('delete', options_metavar='[options]')
+@click.argument('id', default=None, required=False, metavar='[id]')
+@click.option('--title', default=None, help='Filter by title note', metavar='<title>')
+@click.option('--query', default='', help='Search in any note field', metavar='<term>')
 @click.pass_context
 def delete_note(ctx, **kwargs):
     """It works just like get-note. Delete a note by its id or by its title

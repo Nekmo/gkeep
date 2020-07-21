@@ -26,13 +26,13 @@ def items():
     """
 
 
-@items.command('add')
+@items.command('add', options_metavar='[options]')
 @click.option('--check/--uncheck', default=None, help='Item is checked or not')
 @click.option('--duplicate/--no-duplicate', default=False,
               help='By default if the element already exists, it is not duplicated. '
                    'If you want duplicate the element, use the this parameter')
-@click.argument('id')
-@click.argument('text')
+@click.argument('id', metavar='<id>')
+@click.argument('text', metavar='<text>')
 @click.pass_context
 def add_item(ctx, check, duplicate, id, text):
     """Add a item to an existing note. By default if the element already exists,
@@ -60,11 +60,11 @@ def add_item(ctx, check, duplicate, id, text):
     keep.sync()
 
 
-@items.command('edit')
+@items.command('edit', options_metavar='[options]')
 @click.option('--check/--uncheck', default=None, help='Item is checked or not')
-@click.option('--new-text', default='New element text')
-@click.argument('id')
-@click.argument('text')
+@click.option('--new-text', default='New element text', metavar='<text>')
+@click.argument('id', metavar='<id>')
+@click.argument('text', metavar='<text>')
 @click.pass_context
 def edit_item(ctx, check, new_text, id, text):
     """Edit an existing item. Use this command to change the text or
@@ -91,9 +91,9 @@ def edit_item(ctx, check, new_text, id, text):
     keep.sync()
 
 
-@items.command('delete')
-@click.argument('id')
-@click.argument('text')
+@items.command('delete', options_metavar='[options]')
+@click.argument('id', metavar='<id>')
+@click.argument('text', metavar='<text>')
 @click.pass_context
 def delete_item(ctx, id, text):
     """Delete a item to an existing note.
@@ -111,9 +111,9 @@ def delete_item(ctx, id, text):
     keep.sync()
 
 
-@items.command('is-checked')
-@click.argument('id')
-@click.argument('text')
+@items.command('is-checked', options_metavar='[options]')
+@click.argument('id', metavar='<id>')
+@click.argument('text', metavar='<text>')
 @click.pass_context
 def delete_item(ctx, id, text):
     """Returns ``True`` if the item is checked and ``False`` if it is unchecked.
