@@ -9,3 +9,7 @@ Usage
 .. click:: google_keep_tasks.management:items
    :prog: gkeep items
    :show-nested:
+
+.. click:: google_keep_tasks.management:labels
+   :prog: gkeep labels
+   :show-nested:
