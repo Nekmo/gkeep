@@ -3,6 +3,7 @@ import sys
 import click
 from gkeepapi.exception import LabelException
 
+from google_keep_tasks.cli import GkeepGroup
 from google_keep_tasks.utils import pretty_date
 
 
@@ -18,9 +19,9 @@ def format_label_with_timestaps(label):
     )
 
 
-@click.group()
+@click.group(cls=GkeepGroup)
 def labels():
-    """Gkeep can manage Google Keep labels using ``labels`` command.
+    """List, create, rename or delete labels using ``labels`` command.
     This command has subcommands for adding, searching, editing, or
     deleting labels. To see all subcommands of ``labels`` use ``--help``::
 

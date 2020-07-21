@@ -3,6 +3,7 @@ import click
 import gkeepapi
 import sys
 
+from google_keep_tasks.cli import GkeepGroup
 from google_keep_tasks.exceptions import InvalidColor
 
 
@@ -97,9 +98,9 @@ def get_note_instance(keep, id=None, **kwargs):
     return note
 
 
-@click.group()
+@click.group(cls=GkeepGroup)
 def notes():
-    """Gkeep can manage Google Keep notes using ``notes`` command.
+    """Manage Google Keep notes using ``notes`` command.
     This command has subcommands for adding, searching, editing, or
     deleting notes. To see all subcommands of ``notes`` use ``--help``::
 

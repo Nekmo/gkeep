@@ -1,5 +1,6 @@
 import click
 
+from google_keep_tasks.cli import GkeepGroup
 from google_keep_tasks.exceptions import ItemNotFound
 # from google_keep_tasks.management import cli
 
@@ -11,12 +12,11 @@ def search_item(items, text):
     raise ItemNotFound(text)
 
 
-@click.group()
+@click.group(cls=GkeepGroup)
 def items():
-    """Notes can have multiple checkbox items. Gkeep can manage
-    these checkboxes using ``items`` command. This command has subcommands for adding,
-    editing, deleting or check/uncheck items. To see all subcommands of ``items`` use
-    ``--help``::
+    """Use ``items`` command to work with the note checkboxes. This command has
+    subcommands for adding, editing, deleting or check/uncheck items. To see all
+    subcommands of ``items`` use ``--help``::
 
         gkeep items --help
 
