@@ -2,6 +2,18 @@
 History
 =======
 
+1.0.0 (2020-07-22)
+------------------
+
+* Issue #32: Use entrypoints in setup
+* Issue #31: AttributeError: 'ColorValue' object has no attribute 'title'
+* Issue #7: Archived & Pinned options
+* Issue #6: Labels commands
+* Issue #27: Remove auth argument
+* Issue #26: Authentication cli assistant
+* Issue #28: Create docs
+
+
 0.2.1 (2020-05-09)
 ------------------
 
