@@ -114,7 +114,7 @@ def notes():
 
 @notes.command('add', options_metavar='[options]')
 @click.option('--color', default='', callback=get_click_color, metavar='<color>',
-              help='Filter by note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
+              help='Set note color. Choices: {}'.format(', '.join(COLOR_NAMES)))
 @click.option('--labels', default='', callback=comma_separated, metavar='<label>',
               help='Set note labels. Add multiple labels separated by commas')
 @click.argument('title', metavar='<title>')
