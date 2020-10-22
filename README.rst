@@ -3,9 +3,6 @@
 
 |
 
-**DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
-on `the master branch <https://github.com/Nekmo/gkeep/tree/master>`_.
-
 
 Google Keep Cli
 ###############
