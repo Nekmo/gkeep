@@ -2,7 +2,7 @@
 History
 =======
 
-1.0.0 (2020-07-22)
+1.0.0 (2020-10-23)
 ------------------
 
 * Issue #32: Use entrypoints in setup
@@ -10,8 +10,9 @@ History
 * Issue #7: Archived & Pinned options
 * Issue #6: Labels commands
 * Issue #27: Remove auth argument
-* Issue #26: Authentication cli assistant
+* Issue #25: Authentication cli assistant
 * Issue #28: Create docs
+* Issue #30: Refactor notes query params
 
 
 0.2.1 (2020-05-09)
