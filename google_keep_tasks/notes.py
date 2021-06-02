@@ -19,6 +19,8 @@ COLORS = {
 }
 COLOR_NAMES = [color.name.lower() for color in gkeepapi.node.ColorValue]
 
+placeholder = '__placeholder__'
+
 
 def get_color(color):
     if not color:
@@ -199,7 +201,7 @@ def get_note(ctx, **kwargs):
 @notes.command('edit', options_metavar='[options]')
 @click.option('--title', default=None, required=False, metavar='<new title>',
               help='Change the note title')
-@click.option('--text', default=None, required=False, metavar='<new_note_content>',
+@click.option('--text', default=None, required=False, is_flag=False, flag_value=placeholder, metavar='[new_note_content]',
               help='Change the note text')
 @click.option('--filter-id', default=None, required=False, metavar='<id>',
               help='Filter by id note. This is the preferred way to ensure editing the correct note')
@@ -231,6 +233,8 @@ def edit_note(ctx, title, text, color, labels, archived, pinned, filter_id, filt
     if not note:
         click.echo('The note was not found', err=True)
         sys.exit(2)
+    if text == placeholder:
+        text = click.edit(note.text).strip()
     updated = {}
     boolean_nullables = ['archived', 'pinned']  # 3 state params
     for param in ['title', 'text', 'color', 'labels'] + boolean_nullables:
