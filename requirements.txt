@@ -1,2 +1,2 @@
 gkeepapi>=0.10.6
-click
+click>=8.0.0

@@ -1,5 +1,4 @@
 import click
-from click._compat import iteritems
 
 
 def choices_prompt(text, choices, default_choice):
@@ -32,7 +31,7 @@ class GkeepContext(click.Context):
 
 class GkeepGroup(click.Group):
     def make_context(self, info_name, args, parent=None, **extra):
-        for key, value in iteritems(self.context_settings):
+        for key, value in self.context_settings.items():
             if key not in extra:
                 extra[key] = value
         ctx = GkeepContext(self, info_name=info_name, parent=parent, **extra)
