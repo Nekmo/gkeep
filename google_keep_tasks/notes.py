@@ -137,6 +137,7 @@ def edit_note_checkboxes(note):
     for item in note.items:
         if item.id not in [parts['id'] for parts in current_items]:
             item.delete()
+            print('Deleted "%s"' % item.text)
 
     last_added = None
     for parts in current_items:
@@ -149,23 +150,30 @@ def edit_note_checkboxes(note):
             if parts['indented']:
                 previous.indent(added)
             last_added = added
+            print('Added "%s"' % parts['content'])
 
         # Modification
         else:
+            updated = False
             if parts['old'].indented and not parts['indented']:
                 if previous != None:
                     previous.dedent(parts['old'])
+                    updated = True
             if not parts['old'].indented and parts['indented']:
                 if previous != None:
                     previous.indent(parts['old'])
-
+                    updated = True
             if parts['old'].checked and not parts['checked']:
                 parts['old'].checked = False
+                updated = True
             if not parts['old'].checked and parts['checked']:
                 parts['old'].checked = True
-
+                updated = True
             if parts['old'].text != parts['content']:
                 parts['old'].text = parts['content']
+                updated = True
+            if updated:
+                print('Updated "%s"' % parts['content'])
 
 
 def get_note_instance(keep, id=None, **kwargs):
