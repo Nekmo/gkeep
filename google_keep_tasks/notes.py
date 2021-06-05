@@ -2,6 +2,9 @@
 import click
 import gkeepapi
 import sys
+import re
+
+from gkeepapi.node import List
 
 from google_keep_tasks.cli import GkeepGroup
 from google_keep_tasks.exceptions import InvalidColor
@@ -73,6 +76,21 @@ def query_params(keep, **kwargs):
                                                set(x.labels.all()) == set(labels) if labels is not None else None]))
     return kwargs
 
+def format_note_item(item):
+    return u'%s%s %s' % (
+        '  ' if item.indented else '',
+        u'- [x]' if item.checked else u'- [ ]',
+        item.text
+    )
+
+def format_note(note):
+    if not isinstance(note, List):
+        return note.text
+    text = ""
+    for item in note.items:
+        text += "%s | %s\n" % (item.id.ljust(30), format_note_item(item))
+    return text
+
 
 def print_note(note):
     params = COLORS.get(note.color, {})
@@ -82,13 +100,72 @@ def print_note(note):
     click.echo(click.style('"' * len(note_id), **params))
     if note.title:
         click.echo(click.style(note.title, bold=True))
-    click.echo(note.text)
+        click.echo('-' * len(note_id))
+    click.echo(format_note(note))
+    click.echo('-' * len(note_id))
     if note.labels:
-        click.echo()
         click.echo(' '.join(click.style('[{}]'.format(label.name), underline=True, bold=True)
                             for label in note.labels.all()))
     click.echo(click.style('"' * len(note_id), **params))
     click.echo('\n')
+
+
+def edit_note_checkboxes(note):
+    text = click.edit(format_note(note)).strip()
+    lines = text.split("\n")
+    regex = re.compile(r"([\w.]*) *\| ( *)- \[(x| )\] (.*)")
+
+    last_old_note = 'top'
+    current_items = []
+    for line in lines:
+        id, indent, check_mark, content = regex.match(line).groups()
+        found = list(filter(lambda item: item.id == id, note.items))
+        old_note = found[0] if len(found) > 0 else None
+        indented = len(indent) > 1
+        checked = check_mark == 'x'
+        current_items.append({
+            'id': id,
+            'previous': last_old_note,
+            'old': old_note,
+            'indented': indented,
+            'checked': checked,
+            'content': content
+        })
+        last_old_note = old_note
+    
+    # Deletion
+    for item in note.items:
+        if item.id not in [parts['id'] for parts in current_items]:
+            item.delete()
+
+    last_added = None
+    for parts in current_items:
+        previous = parts['previous'] if parts['previous'] != None else last_added
+
+        # Addition
+        if parts['old'] == None:
+            sort = int(previous.sort) - 1 if previous != None and previous != 'top' else gkeepapi.node.NewListItemPlacementValue.Top 
+            added = note.add(parts['content'], parts['checked'], sort)
+            if parts['indented']:
+                previous.indent(added)
+            last_added = added
+
+        # Modification
+        else:
+            if parts['old'].indented and not parts['indented']:
+                if previous != None:
+                    previous.dedent(parts['old'])
+            if not parts['old'].indented and parts['indented']:
+                if previous != None:
+                    previous.indent(parts['old'])
+
+            if parts['old'].checked and not parts['checked']:
+                parts['old'].checked = False
+            if not parts['old'].checked and parts['checked']:
+                parts['old'].checked = True
+
+            if parts['old'].text != parts['content']:
+                parts['old'].text = parts['content']
 
 
 def get_note_instance(keep, id=None, **kwargs):
@@ -234,7 +311,11 @@ def edit_note(ctx, title, text, color, labels, archived, pinned, filter_id, filt
         click.echo('The note was not found', err=True)
         sys.exit(2)
     if text == placeholder:
-        text = click.edit(note.text).strip()
+        if isinstance(note, List):
+            edit_note_checkboxes(note)
+            text = None
+        else:
+            text = click.edit(note.text).strip()
     updated = {}
     boolean_nullables = ['archived', 'pinned']  # 3 state params
     for param in ['title', 'text', 'color', 'labels'] + boolean_nullables:
