@@ -3,6 +3,22 @@
 
 |
 
+.. image:: https://raw.githubusercontent.com/Nekmo/gkeep/pip-rating-badge/pip-rating-badge.svg
+  :target: https://github.com/Nekmo/gkeep/actions/workflows/pip-rating.yml
+  :alt: pip-rating badge
+
+.. image:: https://img.shields.io/pypi/v/telegram-upload.svg?style=flat-square
+  :target: https://pypi.org/project/telegram-upload/
+  :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/pyversions/telegram-upload.svg?style=flat-square
+  :target: https://pypi.org/project/telegram-upload/
+  :alt: Python versions
+
+.. image:: https://img.shields.io/github/stars/Nekmo/gkeep?style=flat-square
+     :target: https://github.com/Nekmo/gkeep
+     :alt: Github stars
+
 **DEVELOPMENT BRANCH**: The current branch is a development version. Go to the stable release by clicking
 on `the master branch <https://github.com/Nekmo/gkeep/tree/master>`_.
 
