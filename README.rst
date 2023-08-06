@@ -7,12 +7,12 @@
   :target: https://github.com/Nekmo/gkeep/actions/workflows/pip-rating.yml
   :alt: pip-rating badge
 
-.. image:: https://img.shields.io/pypi/v/telegram-upload.svg?style=flat-square
-  :target: https://pypi.org/project/telegram-upload/
+.. image:: https://img.shields.io/pypi/v/gkeep.svg?style=flat-square
+  :target: https://pypi.org/project/gkeep/
   :alt: Latest PyPI version
 
-.. image:: https://img.shields.io/pypi/pyversions/telegram-upload.svg?style=flat-square
-  :target: https://pypi.org/project/telegram-upload/
+.. image:: https://img.shields.io/pypi/pyversions/gkeep.svg?style=flat-square
+  :target: https://pypi.org/project/gkeep/
   :alt: Python versions
 
 .. image:: https://img.shields.io/github/stars/Nekmo/gkeep?style=flat-square
